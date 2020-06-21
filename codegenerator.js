@@ -63,7 +63,7 @@ function reverse(input) {
 }
 
 ////////////////////////////////////////////////////////
-var inputList = ['Ruben de Vos', 'Rianne', 'Marielle', 'ha'];
+var inputList = ['Ruben'];
 //var inputList = ['Ruben de Vos1', 'as', 'asdasdoijasd', 'asdoijasd 98 hiusahdiu hasiud '];
 for(var input of inputList) {
     var oPass = createPasswordOriginal(input);
@@ -79,10 +79,10 @@ for(var input of inputList) {
     oPass == output ? console.info('%c same', 'background: #222; color: #bada55') : console.log('%c different',  'background: #ee0000; color: #fff');
 
     // Now reverse
-    var newResult = reverse(output);
+    var newResult = reverse(oPass);
     console.log('And the reversed input is:     [' + newResult + ']');
 
-    input == newResult ? alert('IT WORKED') : null;
+    input === newResult ? console.info('%cIT WORKED', 'background-color:green;font-size:1.8em;') : null;
 }
 
 
