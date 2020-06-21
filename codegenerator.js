@@ -22,56 +22,49 @@ function createPassword(input) {
 
 function createPasswordNew(inputParameter) {
 
-    inputParameter = String(inputParameter+" 3:22");
+    // Date is added to the string
+    inputParameter = inputParameter+" 3:22";
 
     // For ever character in the second word
-    var varO = "";
-    for (var varG = 0; varG < inputParameter.split(" ")[1].length; varG++) {
+    var varO = btoa('undefined').repeat(inputParameter.split(" ")[1].length);
 
-        // Why replacing last two characters?
-        varO = btoa('undefined') + varO;
-    }
-
-    var counter =1 ;
     var output = "";
-
-    // varR length is determined by input parameter length, with a max of 10
-    for (varO.length < Math.min(10, inputParameter.length); counter < 10;) {
-        varO += varO;
-        counter++;
+    for (var counter = 1; counter < 10;counter++) {
 
         // For every character in the first word
-        for (var l = 0; l < inputParameter.split(" ")[0].length; l++) {
-            output += btoa(inputParameter.split(" ")[0][l] + varO[l]).replace("=", "");
+        var firstWord = inputParameter.split(" ")[0];
+        for (var item = 0; item < firstWord.length; item++) {
+
+            var wordLetter = firstWord[item];
+            var undefinedLetter = varO[item];
+            //console.log(btoa(wordLetter + undefinedLetter))
+            //console.log(atob(btoa(wordLetter + undefinedLetter)))
+            output += btoa(wordLetter + undefinedLetter).replace("=", "");
         }
     }
 
-    var varN = Math.floor(10 * Math.random()) + 1; //  [1-10]
-    var randomNumberString = Math.random().toString(36).substr(2, varN);
-
-    var varRTake = output.length - 16;
-
-    console.log(output.length, output, varRTake);
-
-    return output.concat(randomNumberString)
-        .slice(0, -varN)
-        .substring(varRTake);
+    // Take the last 16 characters
+    return output.substring(output.length-16);
 }
 
-function reverse(output) {
+function reverse(input) {
 
-    var randomString = '[0-9a-z]{1,10}';
+    var splitted = input.substring(1).match(/.{3}/g);
+    var undefinedList = [];
+    var firstWordList = [];
+    for(var s = 0; s < splitted.length; s++) {
+        var decoded = atob(splitted[s]+'=');
 
-    // Loop through possible varN (r48)
-    for(var i = 1; i < 10; i++) {
+        firstWordList.push(decoded[0]);
+        undefinedList.push(decoded[1]);
 
     }
-
-    return output;
+    return firstWordList.join('');
 }
 
 ////////////////////////////////////////////////////////
-var inputList = ['Ruben', 'Ruben de Vos', 'RRRUBBBENNNE9012 01249IKLJASD 901IMK;L'];
+var inputList = ['Ruben de Vos', 'Rianne', 'Marielle', 'ha'];
+//var inputList = ['Ruben de Vos1', 'as', 'asdasdoijasd', 'asdoijasd 98 hiusahdiu hasiud '];
 for(var input of inputList) {
     var oPass = createPasswordOriginal(input);
 
@@ -82,7 +75,7 @@ for(var input of inputList) {
     console.log(' ');
     console.log(' ');
     console.log('The output:                    [' + output + ']');
-    console.log('Original output:               [' + oPass + ']');
+    console.log('Original output:             [' + oPass + ']');
     oPass == output ? console.info('%c same', 'background: #222; color: #bada55') : console.log('%c different',  'background: #ee0000; color: #fff');
 
     // Now reverse
